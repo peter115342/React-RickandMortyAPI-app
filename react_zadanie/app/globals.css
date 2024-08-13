@@ -3,27 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255, 1;
+  --foreground-borders-rgb : 66, 67, 69, 1;
+  --background-rgb: 33, 34, 36;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 255, 255, 255, 1;
+    --foreground-borders-rgb : 66, 67, 69, 1;
+    --background-rgb: 33, 34, 36;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: rgb(var(--background-rgb));
+
+}
+
+button {
+  background-color: rgb(var(--background-rgb));
+  border: 1px solid rgb(var(--foreground-borders-rgb));
+  border-radius: 5px;
+  padding: 8px, 12px, 8px, 8px;
+  font-weight: bold;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width:  120px;
+  min-height: 40px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border-bottom: 1px solid rgb(var(--foreground-borders-rgb));
 }
 
 @layer utilities {
