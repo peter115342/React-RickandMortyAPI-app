@@ -210,8 +210,8 @@ const CharacterList = () => {
                   </div>
                   <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
                     <span className="font-bold sm:hidden">Detail:</span>
-                    <Link href={`/character/${character.id}`} className="text-blue-500 hover:underline">
-                      View Details
+                    <Link href={`/details/${character.id}`} className="text-indigo-600 hover:text-indigo-900">
+                      Link
                     </Link>
                   </div>
                 </div>
