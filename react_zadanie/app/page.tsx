@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { QueryClient, QueryClientProvider, useInfiniteQuery } from 'react-query';
 import { FaSort, FaSortUp, FaSortDown, FaArrowUp, FaArrowDown, FaInfinity } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaQuestion } from 'react-icons/fa';
 import React from 'react';
+import Image from 'next/image';
 
 const queryClient = new QueryClient();
 
@@ -103,13 +105,13 @@ const CharacterList = () => {
       <div className="p-4 mb-4 flex justify-center">
         <button
           onClick={() => setShowAllData(!showAllData)}
-          className="min-w-160 px-4 py-2"
+          className="min-w-[140px] max-w-[160px] sm:max-w-none px-4 py-2"
         >
           <FaInfinity className="mr-2" /> 
           {showAllData ? 'Disable' : 'Enable'} Infinite Scroll
         </button>
       </div>
-      <div className="p-4">
+      <div className="p-0 sm:p-4">
         <div className="overflow-x-auto sm:overflow-x-visible">
           <div className="grid sm:table w-full">
             <div className="hidden sm:table-row-group">
@@ -168,51 +170,80 @@ const CharacterList = () => {
             <div className="sm:table-row-group">
               {(showAllData ? sortedCharacters : sortedCharacters.slice(0, visibleRows)).map((character) => (
                 <div key={character.id} className="grid sm:table-row mb-4 sm:mb-0 hover:bg-black border-t-4 border-b-4 sm:border-t-0 sm:border-b border-gray-700 sm:border-gray-600">
-                    <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Name:</span>
-                    {character.name}
+                    <div className="flex items-center">
+                      <Image
+                        src={character.image}
+                        alt={character.name}
+                        width={40}
+                        height={40}
+                        className="mr-4"
+                      />
+                      {character.name}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Status:</span>
-                    <span className={`px-2 py-1 rounded-full text-white ${
-                      character.status === 'Alive' ? 'bg-green-500' :
-                      character.status === 'Dead' ? 'bg-red-500' :
-                      'bg-gray-500'
-                    }`}>
+                    <span className={`
+                      flex flex-row justify-center items-center
+                      px-1.5 py-1
+                      w-fit h-6
+                      rounded
+                      ${character.status === 'Alive' ? 'bg-[#67EF7B] text-black' :
+                        character.status === 'Dead' ? 'bg-red-500 text-black' :
+                        'bg-gray-500 text-white'}
+                    `}>
+                      {character.status === 'Alive' && <FaCheck className="mr-1" />}
+                      {character.status === 'Dead' && <FaTimes className="mr-1" />}
+                      {character.status === 'unknown' && <FaQuestion className="mr-1" />}
                       {character.status}
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Species:</span>
-                    {character.species}
+                    <span className="flex items-center">{character.species}</span>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Gender:</span>
-                    {character.gender}
+                    <span className="flex items-center">{character.gender}</span>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Origin:</span>
-                    {character.origin.name !== 'unknown' ? (
-                      character.origin.name
-                    ) : (
-                      <span className="px-2 py-1 rounded-full text-white bg-gray-500">
-                        Unknown
-                      </span>
-                    )}
+                    <span className="flex items-center">
+                      {character.origin.name !== 'unknown' ? (
+                        character.origin.name
+                      ) : (
+                        <span className={`
+                          flex flex-row justify-center items-center
+                          px-1.5 py-1
+                          w-fit h-6
+                          rounded
+                          bg-gray-500 text-white
+                        `}>
+                          <FaQuestion className="mr-1" />
+                          Unknown
+                        </span>
+                      )}
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Created:</span>
-                    {new Date(character.created).toLocaleDateString('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    }).replace(/\//g, '.')}
+                    <span className="flex items-center">
+                      {new Date(character.created).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      }).replace(/\//g, '.')}
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
                     <span className="font-bold sm:hidden">Detail:</span>
-                    <Link href={`/details/${character.id}`} className="text-indigo-600 hover:text-indigo-900">
-                      Link
-                    </Link>
+                    <span className="flex items-center">
+                      <Link href={`/details/${character.id}`} className="text-indigo-600 hover:text-indigo-900">
+                        Link
+                      </Link>
+                    </span>
                   </div>
                 </div>
               ))}
@@ -224,7 +255,7 @@ const CharacterList = () => {
             <>
               {visibleRows > 5 && (
                 <button onClick={loadLess}>
-                  <FaArrowUp className="mr-2" /> Load less
+                  <FaArrowUp className="mr-2" /> Show less
                 </button>
               )}
               {visibleRows < sortedCharacters.length && (
