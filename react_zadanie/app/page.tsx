@@ -19,6 +19,7 @@ const CharacterList = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [visibleRows, setVisibleRows] = useState(5);
   const [showAllData, setShowAllData] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isLoading, isError, error } = useInfiniteQuery(
     'characters',
@@ -71,10 +72,16 @@ const CharacterList = () => {
   };
 
   const handleScroll = () => {
-    if (showAllData && 
-        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100) {
-      fetchNextPage();
+    if (showAllData) {
+      setIsScrolled(window.scrollY > 100);
+      if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100) {
+        fetchNextPage();
+      }
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -92,129 +99,153 @@ const CharacterList = () => {
   if (isError) return <p className="text-center text-red-500">Error: {error.message}</p>;
 
   return (
-    <div className="p-4">
-      <table className="w-full border-collapse table-auto">
-        <thead>
-          <tr>
-            <th onClick={() => requestSort('name')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Name
-                <span className="ml-1">
-                  {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th onClick={() => requestSort('status')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Status
-                <span className="ml-1">
-                  {sortConfig.key === 'status' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th onClick={() => requestSort('species')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Species
-                <span className="ml-1">
-                  {sortConfig.key === 'species' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th onClick={() => requestSort('gender')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Gender
-                <span className="ml-1">
-                  {sortConfig.key === 'gender' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th onClick={() => requestSort('origin')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Origin
-                <span className="ml-1">
-                  {sortConfig.key === 'origin' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th onClick={() => requestSort('created')} className="border-b p-4 text-left cursor-pointer">
-              <div className="flex items-center">
-                Created
-                <span className="ml-1">
-                  {sortConfig.key === 'created' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
-                </span>
-              </div>
-            </th>
-            <th className="border-b p-4 text-left">Detail</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(showAllData ? sortedCharacters : sortedCharacters.slice(0, visibleRows)).map((character) => (
-            <tr key={character.id} className="hover:bg-black">
-              <td className="border-b p-4">{character.name}</td>
-              <td className="border-b p-4">
-                <span className={`px-2 py-1 rounded-full text-white ${
-                  character.status === 'Alive' ? 'bg-green-500' :
-                  character.status === 'Dead' ? 'bg-red-500' :
-                  'bg-gray-500'
-                }`}>
-                  {character.status}
-                </span>
-              </td>
-              <td className="border-b p-4">{character.species}</td>
-              <td className="border-b p-4">{character.gender}</td>
-              <td className="border-b p-4">
-                {character.origin.name !== 'unknown' ? (
-                  character.origin.name
-                ) : (
-                  <span className="px-2 py-1 rounded-full text-white bg-gray-500">
-                    Unknown
-                  </span>
-                )}
-              </td>
-              <td className="border-b p-4">
-                {new Date(character.created).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric'
-                }).replace(/\//g, '.')}
-              </td>
-              <td className="border-b p-4">
-                <Link href={`/character/${character.id}`} className="text-blue-500 hover:underline">
-                  View Details
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="mt-4 flex justify-center space-x-4">
-        {!showAllData && (
-          <>
-            {visibleRows > 5 && (
-              <button
-                onClick={loadLess}
-              >
-                <FaArrowUp className="mr-2" /> Load less
-              </button>
-            )}
-            {visibleRows < sortedCharacters.length && (
-              <button
-                onClick={loadMore}
-              >
-                <FaArrowDown className="mr-2" /> Load more
-              </button>
-            )}
-          </>
-        )}
+    <div>
+      <div className="p-4 mb-4 flex justify-center">
         <button
           onClick={() => setShowAllData(!showAllData)}
-          className="min-w-160 px-4 py-2 "
-
+          className="min-w-160 px-4 py-2"
         >
           <FaInfinity className="mr-2" /> 
           {showAllData ? 'Disable' : 'Enable'} Infinite Scroll
         </button>
       </div>
+      <div className="p-4">
+        <div className="overflow-x-auto sm:overflow-x-visible">
+          <div className="grid sm:table w-full">
+            <div className="hidden sm:table-row-group">
+              <div className="sm:table-row">
+                <div onClick={() => requestSort('name')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Name
+                    <span className="ml-1">
+                      {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div onClick={() => requestSort('status')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Status
+                    <span className="ml-1">
+                      {sortConfig.key === 'status' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div onClick={() => requestSort('species')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Species
+                    <span className="ml-1">
+                      {sortConfig.key === 'species' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div onClick={() => requestSort('gender')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Gender
+                    <span className="ml-1">
+                      {sortConfig.key === 'gender' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div onClick={() => requestSort('origin')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Origin
+                    <span className="ml-1">
+                      {sortConfig.key === 'origin' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div onClick={() => requestSort('created')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                  <div className="flex items-center">
+                    Created
+                    <span className="ml-1">
+                      {sortConfig.key === 'created' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
+                    </span>
+                  </div>
+                </div>
+                <div className="hidden sm:table-cell border-b p-2 sm:p-4 text-left">Detail</div>
+              </div>
+            </div>
+            <div className="sm:table-row-group">
+              {(showAllData ? sortedCharacters : sortedCharacters.slice(0, visibleRows)).map((character) => (
+                <div key={character.id} className="grid sm:table-row mb-4 sm:mb-0 hover:bg-black border-t-4 border-b-4 sm:border-t-0 sm:border-b border-gray-700 sm:border-gray-600">
+                    <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Name:</span>
+                    {character.name}
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Status:</span>
+                    <span className={`px-2 py-1 rounded-full text-white ${
+                      character.status === 'Alive' ? 'bg-green-500' :
+                      character.status === 'Dead' ? 'bg-red-500' :
+                      'bg-gray-500'
+                    }`}>
+                      {character.status}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Species:</span>
+                    {character.species}
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Gender:</span>
+                    {character.gender}
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Origin:</span>
+                    {character.origin.name !== 'unknown' ? (
+                      character.origin.name
+                    ) : (
+                      <span className="px-2 py-1 rounded-full text-white bg-gray-500">
+                        Unknown
+                      </span>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Created:</span>
+                    {new Date(character.created).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).replace(/\//g, '.')}
+                  </div>
+                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4">
+                    <span className="font-bold sm:hidden">Detail:</span>
+                    <Link href={`/character/${character.id}`} className="text-blue-500 hover:underline">
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-center space-x-4">
+          {!showAllData && (
+            <>
+              {visibleRows > 5 && (
+                <button onClick={loadLess}>
+                  <FaArrowUp className="mr-2" /> Load less
+                </button>
+              )}
+              {visibleRows < sortedCharacters.length && (
+                <button onClick={loadMore}>
+                  <FaArrowDown className="mr-2" /> Load more
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+      {showAllData && isScrolled && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm text-white rounded-full shadow-lg hover:bg-opacity-30 transition-all duration-300 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center !p-0 !m-0 !border-0 !min-w-0 !min-h-0"
+          style={{ background: 'rgba(255, 255, 255, 0.2)' }}
+          aria-label="Scroll to top"
+        >
+          <FaArrowUp className="text-lg sm:text-xl md:text-2xl" />
+        </button>
+      )}
     </div>
   );
 };
