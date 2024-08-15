@@ -102,7 +102,7 @@ const CharacterList = () => {
 
   return (
     <div>
-      <div className="p-4 mb-4 flex justify-center">
+      <div className="p-4 mb-1 flex justify-center">
         <button
           onClick={() => setShowAllData(!showAllData)}
           className="min-w-[140px] max-w-[160px] sm:max-w-none px-4 py-2"
@@ -112,8 +112,8 @@ const CharacterList = () => {
         </button>
       </div>
       <div className="p-0 sm:p-4">
-        <div className="overflow-x-auto sm:overflow-x-visible">
-          <div className="grid sm:table w-full">
+      <div className="overflow-x-auto sm:overflow-x-visible mx-1 sm:ml-24 sm:mr-24">
+      <div className="grid sm:table w-full">
             <div className="hidden sm:table-row-group">
               <div className="sm:table-row">
                 <div onClick={() => requestSort('name')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
