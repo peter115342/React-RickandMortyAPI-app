@@ -123,67 +123,66 @@ const CharacterList = () => {
         </button>
       </div>
       <div className="p-0 sm:p-4">
-        <div className="overflow-x-auto sm:overflow-x-visible mx-1 sm:ml-24 sm:mr-24">
-          <div className="grid sm:table w-full">
-            <div className="hidden sm:table-row-group">
-              <div className="sm:table-row">
-                <div onClick={() => requestSort('name')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+        <div className="overflow-x-auto mx-1 sm:mx-24">
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('name')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Name
                     <span className="ml-1">
                       {sortConfig.key === 'name' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div onClick={() => requestSort('status')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                </th>
+                <th onClick={() => requestSort('status')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Status
                     <span className="ml-1">
                       {sortConfig.key === 'status' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div onClick={() => requestSort('species')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                </th>
+                <th onClick={() => requestSort('species')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Species
                     <span className="ml-1">
                       {sortConfig.key === 'species' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div onClick={() => requestSort('gender')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                </th>
+                <th onClick={() => requestSort('gender')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Gender
                     <span className="ml-1">
                       {sortConfig.key === 'gender' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div onClick={() => requestSort('origin')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                </th>
+                <th onClick={() => requestSort('origin')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Origin
                     <span className="ml-1">
                       {sortConfig.key === 'origin' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div onClick={() => requestSort('created')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
+                </th>
+                <th onClick={() => requestSort('created')} className="p-2 sm:p-4 text-left cursor-pointer">
                   <div className="flex items-center">
                     Created
                     <span className="ml-1">
                       {sortConfig.key === 'created' ? (sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />) : <FaSort />}
                     </span>
                   </div>
-                </div>
-                <div className="hidden sm:table-cell border-b p-2 sm:p-4 text-left">Detail</div>
-              </div>
-            </div>
-            <div className="sm:table-row-group">
+                </th>
+                <th className="p-2 sm:p-4 text-left">Detail</th>
+              </tr>
+            </thead>
+            <tbody>
               {(showAllData ? sortedCharacters : sortedCharacters.slice(0, visibleRows)).map((character) => (
-                <div key={character.id} className="grid sm:table-row mb-4 sm:mb-0 hover:bg-black border-t-4 border-b-4 sm:border-t-0 sm:border-b border-gray-700 sm:border-gray-600">
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Name:</span>
-                    <div className="flex items-center">
+                <tr key={character.id} className="hover:bg-black border-b border-gray-600">
+                  <td className="p-2 sm:p-4">
+                    <div className="flex items-center pr-4">
                       <Image
                         src={character.image}
                         alt={character.name}
@@ -191,11 +190,10 @@ const CharacterList = () => {
                         height={40}
                         className="mr-4"
                       />
-                      {character.name}
+                      <span className="truncate mr-2">{character.name}</span>
                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Status:</span>
+                  </td>
+                  <td className="p-2 sm:p-4">
                     <span className={`
                       flex flex-row justify-center items-center
                       px-1.5 py-1
@@ -210,56 +208,41 @@ const CharacterList = () => {
                       {character.status === 'unknown' && <FaQuestion className="mr-1" />}
                       {character.status}
                     </span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Species:</span>
-                    <span className="flex items-center">{character.species}</span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Gender:</span>
-                    <span className="flex items-center">{character.gender}</span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Origin:</span>
-                    <span className="flex items-center">
-                      {character.origin.name !== 'unknown' ? (
-                        character.origin.name
-                      ) : (
-                        <span className={`
-                          flex flex-row justify-center items-center
-                          px-1.5 py-1
-                          w-fit h-6
-                          rounded
-                          bg-gray-500 text-white
-                        `}>
-                          <FaQuestion className="mr-1" />
-                          Unknown
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Created:</span>
-                    <span className="flex items-center">
-                      {new Date(character.created).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                      }).replace(/\//g, '.')}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:table-cell border-b p-2 sm:p-4 align-middle">
-                    <span className="font-bold sm:hidden">Detail:</span>
-                    <span className="flex items-center">
-                      <Link href={`/details/${character.id}`} className="text-indigo-600 hover:text-indigo-900">
-                        Link
-                      </Link>
-                    </span>
-                  </div>
-                </div>
+                  </td>
+                  <td className="p-2 sm:p-4">{character.species}</td>
+                  <td className="p-2 sm:p-4">{character.gender}</td>
+                  <td className="p-2 sm:p-4">
+                    {character.origin.name !== 'unknown' ? (
+                      character.origin.name
+                    ) : (
+                      <span className={`
+                        flex flex-row justify-center items-center
+                        px-1.5 py-1
+                        w-fit h-6
+                        rounded
+                        bg-gray-500 text-white
+                      `}>
+                        <FaQuestion className="mr-1" />
+                        Unknown
+                      </span>
+                    )}
+                  </td>
+                  <td className="p-2 sm:p-4">
+                    {new Date(character.created).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }).replace(/\//g, '.')}
+                  </td>
+                  <td className="p-2 sm:p-4">
+                    <Link href={`/details/${character.id}`} className="text-indigo-600 hover:text-indigo-900">
+                      Link
+                    </Link>
+                  </td>
+                </tr>
               ))}
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
         <div className="mt-4 mb-3 sm:mb-0 flex justify-center space-x-4">
           {!showAllData && (
