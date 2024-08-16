@@ -22,12 +22,12 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
   const { data: character, isLoading, isError } = useQuery(['character', id], () => fetchCharacter(id));
 
   if (isLoading) return <div className="flex justify-center items-center h-screen">
-  <p className="text-2xl">Loading...</p>
-</div>;
+      <p className="text-2xl">Loading...</p>
+    </div>;
   if (isError) return <div>Error fetching character</div>;
 
   return (
-    <div className="container mx-auto p-4 max-w-[820px] overflow-auto mt-24">
+    <div className="container mx-auto p-4 max-w-[820px] overflow-auto mt-12">
       <div className="flex flex-col md:flex-row md:items-start">
       <button onClick={() => router.back()} className="mb-4 md:mb-0 md:mr-2 border-none max-w-[84px]">
       &larr; Back

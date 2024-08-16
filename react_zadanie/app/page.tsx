@@ -261,16 +261,16 @@ const CharacterList = () => {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex justify-center space-x-4">
+        <div className="mt-4 mb-3 sm:mb-0 flex justify-center space-x-4">
           {!showAllData && (
             <>
               {visibleRows > 5 && (
-                <button onClick={loadLess}>
+                <button onClick={loadLess} className="mb-3 sm:mb-0">
                   <FaArrowUp className="mr-2" /> Show less
                 </button>
               )}
               {visibleRows < sortedCharacters.length && (
-                <button onClick={loadMore}>
+                <button onClick={loadMore} className="mb-3 sm:mb-0">
                   <FaArrowDown className="mr-2" /> Load more
                 </button>
               )}
