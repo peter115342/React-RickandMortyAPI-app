@@ -21,7 +21,9 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
 
   const { data: character, isLoading, isError } = useQuery(['character', id], () => fetchCharacter(id));
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="flex justify-center items-center h-screen">
+  <p className="text-2xl">Loading...</p>
+</div>;
   if (isError) return <div>Error fetching character</div>;
 
   return (

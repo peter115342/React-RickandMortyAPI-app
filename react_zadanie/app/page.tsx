@@ -11,42 +11,53 @@ import Image from 'next/image';
 
 const queryClient = new QueryClient();
 
-const fetchCharacters = async ({ pageParam = 1 }) => {
+interface Character {
+  id: number;
+  name: string;
+  status: string;
+  species: string;
+  gender: string;
+  origin: { name: string };
+  created: string;
+  image: string;
+}
+
+interface ApiResponse {
+  info: { next: string | null };
+  results: Character[];
+}
+
+const fetchCharacters = async ({ pageParam = 1 }): Promise<ApiResponse> => {
   const res = await fetch(`https://rickandmortyapi.com/api/character?page=${pageParam}&count=5`);
   return res.json();
 };
 
 const CharacterList = () => {
   const router = useRouter();
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Character | null; direction: 'ascending' | 'descending' }>({ key: null, direction: 'ascending' });
   const [visibleRows, setVisibleRows] = useState(5);
   const [showAllData, setShowAllData] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isError, error } = useInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, isLoading, isError, error } = useInfiniteQuery<ApiResponse, Error>(
     'characters',
     async (context) => {
       await new Promise(resolve => setTimeout(resolve, 500));
       return fetchCharacters(context);
     },
     {
-      getNextPageParam: (lastPage, pages) => lastPage.info.next ? pages.length + 1 : undefined,
-      select: (data) => ({
-        pages: data.pages,
-        pageParams: data.pageParams,
-        results: data.pages.flatMap(page => page.results)
-      })
+      getNextPageParam: (lastPage) => lastPage.info.next ? parseInt(lastPage.info.next.split('=')[1]) : undefined,
     }
   );
 
   const sortedCharacters = React.useMemo(() => {
-    let sortableItems = data ? data.results : [];
+    let sortableItems = data ? data.pages.flatMap(page => page.results) : [];
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        if (a[sortConfig.key!] < b[sortConfig.key!]) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (a[sortConfig.key!] > b[sortConfig.key!]) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -55,8 +66,8 @@ const CharacterList = () => {
     return sortableItems;
   }, [data, sortConfig]);
 
-  const requestSort = (key) => {
-    let direction = 'ascending';
+  const requestSort = (key: keyof Character) => {
+    let direction: 'ascending' | 'descending' = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
@@ -107,13 +118,13 @@ const CharacterList = () => {
           onClick={() => setShowAllData(!showAllData)}
           className="min-w-[140px] max-w-[160px] sm:max-w-none px-4 py-2"
         >
-          <FaInfinity className="mr-2" /> 
+          <FaInfinity className="mr-2" />
           {showAllData ? 'Disable' : 'Enable'} Infinite Scroll
         </button>
       </div>
       <div className="p-0 sm:p-4">
-      <div className="overflow-x-auto sm:overflow-x-visible mx-1 sm:ml-24 sm:mr-24">
-      <div className="grid sm:table w-full">
+        <div className="overflow-x-auto sm:overflow-x-visible mx-1 sm:ml-24 sm:mr-24">
+          <div className="grid sm:table w-full">
             <div className="hidden sm:table-row-group">
               <div className="sm:table-row">
                 <div onClick={() => requestSort('name')} className="hidden sm:table-cell border-b p-2 sm:p-4 text-left cursor-pointer">
