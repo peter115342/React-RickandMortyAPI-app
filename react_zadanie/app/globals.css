@@ -31,16 +31,12 @@ button {
   background-color: rgb(var(--background-rgb));
   border: 1px solid rgb(var(--foreground-borders-rgb));
   border-radius: 5px;
-  padding: 8px, 12px, 8px, 8px;
+  padding: 8px 12px;
   font-weight: bold;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width:  120px;
+  min-width: 120px;
   min-height: 40px;
 }
 
@@ -130,4 +126,34 @@ td, th {
     width: 4rem;
     height: 4rem;
   }
+}
+
+.character-status {
+  display: flex;
+  flex-row: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  width: fit-content;
+  height: 1.5rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+}
+
+.episode-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0D8CD2;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  width: 23px;
+  height: 22px;
+  -webkit-border-radius: 0.25rem;
+  -moz-border-radius: 0.25rem;
+  -ms-border-radius: 0.25rem;
+  -o-border-radius: 0.25rem;
 }

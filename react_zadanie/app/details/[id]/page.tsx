@@ -29,8 +29,8 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
   return (
     <div className="container mx-auto p-4 max-w-[820px] overflow-auto mt-12">
       <div className="flex flex-col md:flex-row md:items-start">
-      <button onClick={() => router.back()} className="mb-4 md:mb-0 md:mr-2 border-none max-w-[84px]">
-      &larr; Back
+        <button onClick={() => router.back()} className="mb-4 md:mb-0 md:mr-2 border-none max-w-[84px]">
+          &larr; Back
         </button>
         <div className="overflow-hidden flex-grow">
           <div className="flex flex-col md:flex-row">
@@ -46,15 +46,11 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
             <div className="p-4 md:p-6 flex-grow">
               <div className="flex items-center justify-between mb-4 flex-wrap md:flex-nowrap">
                 <h1 className="text-2xl md:text-3xl font-bold text-white mr-2 truncate">{character.name}</h1>
-                <span className={`
-                  flex flex-row justify-center items-center
-                  px-1.5 py-1
-                  w-fit h-6
-                  rounded whitespace-nowrap
-                  ${character.status === 'Alive' ? 'bg-[#67EF7B] text-black' :
-                    character.status === 'Dead' ? 'bg-red-500 text-black' :
-                    'bg-gray-500 text-white'}
-                `}>
+                <span className={`character-status ${
+                  character.status === 'Alive' ? 'status-alive' :
+                  character.status === 'Dead' ? 'status-dead' :
+                  'status-unknown'
+                }`}>
                   {character.status === 'Alive' && <FaCheck className="mr-1" />}
                   {character.status === 'Dead' && <FaTimes className="mr-1" />}
                   {character.status === 'unknown' && <FaQuestion className="mr-1" />}
@@ -68,7 +64,7 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
                 {character.origin.name !== 'unknown' ? (
                   character.origin.name
                 ) : (
-                  <span className="flex flex-row justify-center items-center px-1.5 py-1 w-fit h-6 rounded bg-gray-500 text-white">
+                  <span className="character-status status-unknown">
                     <FaQuestion className="mr-1" />
                     Unknown
                   </span>
@@ -80,7 +76,7 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
           <div className="mt-4">
             <div className="flex items-center">
               <h2 className="text-xl font-bold mr-2">EPISODES</h2>
-              <span className="flex items-center justify-center bg-[#0D8CD2] text-white text-xs font-bold px-1.5 py-1 rounded w-[23px] h-[22px]">
+              <span className="episode-count">
                 {character.episodes.length}
               </span>
             </div>
