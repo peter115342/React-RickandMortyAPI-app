@@ -29,3 +29,8 @@
 Deployed on [Vercel](https://react-zadanie-exhh6w3bb-peter115342s-projects.vercel.app/)
 
 
+
+## 📸 Showcase
+
+![image](https://github.com/user-attachments/assets/f213de86-f1e1-40a9-911d-5fde4692c4c0)
+![image](https://github.com/user-attachments/assets/f6992abc-f538-41eb-bd90-84e58f191004)
