@@ -1,4 +1,4 @@
-# 🚀 React Rick and Morty API App
+#  React Rick and Morty API App
 
 
 ## 🌟 Features
