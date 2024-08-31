@@ -26,7 +26,7 @@
 
 ## 🚀 Deployment
 
-Deployed on [Vercel](https://react-zadanie-exhh6w3bb-peter115342s-projects.vercel.app/)
+Deployed on [Vercel](https://react-zadanie-ba9ml3zwg-peter115342s-projects.vercel.app/)
 
 
 
