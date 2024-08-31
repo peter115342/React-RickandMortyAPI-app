@@ -45,7 +45,7 @@ const CharacterDetails = ({ params }: { params: { id: string } }) => {
             </div>
             <div className="p-4 md:p-6 flex-grow">
               <div className="flex items-center justify-between mb-4 flex-wrap md:flex-nowrap">
-                <h1 className="text-2xl md:text-3xl font-bold text-white mr-2 truncate">{character.name}</h1>
+                <h1 className="text-2xl md:text-3xl font-bold text-white mr-2 break-words max-w-full">{character.name}</h1>
                 <span className={`character-status ${
                   character.status === 'Alive' ? 'status-alive' :
                   character.status === 'Dead' ? 'status-dead' :

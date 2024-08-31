@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-//import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-//const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Innovatrics - React Assignment",
+  title: "Rick and Morty API React App",
 };
 
 export default function RootLayout({
@@ -14,9 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={montserrat.className}>
       {}
-      <body className="font-montserrat">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
